@@ -18,4 +18,5 @@ sleep 3
 mkfs -t ext4 /dev/sdb1 &>/dev/null
 mkdir /data &>/dev/null
 mount /dev/sdb1 /data
+df -h
 echo "已完成"
