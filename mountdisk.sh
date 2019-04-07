@@ -30,12 +30,12 @@ then
 	dd if=/dev/zero of=$choice bs=512 count=1 &>/dev/null
 
 	echo "n
-	p
-	1
+p
+1
 
 
-	p
-	w" | fdisk $choice &>/dev/null
+p
+w" | fdisk $choice &>/dev/null
 fi
 
 partprobe $choice
@@ -49,4 +49,4 @@ read -p "请输入挂载路径: " dirmount
 mkfs -t ext4 $newdisk &>/dev/null
 mkdir /$dirmount &>/dev/null
 mount $newdisk /$dirmount
-echo "已成功完成"  
+echo "已成功完成"
