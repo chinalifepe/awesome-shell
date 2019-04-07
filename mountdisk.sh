@@ -1,26 +1,26 @@
 #!/bin/bash
 
-fdisk -l | grep -o "^Disk /dev/[sh]d[a-z]"
+fdisk -l | grep -o "^磁盘 /dev/[sh]d[a-z]"
 
-read -p "Your choice: " choice
-read -p "Your mount: " dirmount
+read -p "请输入需要挂载的磁盘: " choice
+echo "输入q或Q退出程序"
 until [ $choice != 'q' -a $choice != 'Q' -a $choice != 'quit' -a $choice != 'Quit' ]&& fdisk -l | grep -o "^Disk /dev/[sh]d[a-z]"|grep $choice;do
-if [ $choice == 'q' -o $choice == 'Q' -o $choice == 'quit' -o $choice == 'Quit' ];then  echo "The shell is quiting"
+if [ $choice == 'q' -o $choice == 'Q' -o $choice == 'quit' -o $choice == 'Quit' ];then  echo "程序已退出"
 exit 5
 else
-echo "Wrong options"
-read -p "Your choice: " choice
+echo "输入错误"
+read -p "请输入需要挂载的磁盘: " choice
 fi
 done
-echo "Disk $choice is to init,this will destroy all data.Are you sure"
-read -p "Continue? Y|y or N|n: " choiceyn
+echo "磁盘 $choice 即将初始化分区，请确认"
+read -p "(y or n): " choiceyn
 if [ $choiceyn == 'N' -o $choiceyn == 'n' ];then
-echo "You chose no"
-echo "The shell is quiting"
+
+echo "程序已退出"
 exit 5
 elif [ $choiceyn == 'Y' -o $choiceyn == 'y' ];then
-echo "You chose yes,init will begin"
-echo "initing....please wait"
+
+echo "正在初始化....请稍后"
 dd if=/dev/zero of=$choice bs=512 count=1 &>/dev/null
 echo "n
 p
@@ -35,9 +35,10 @@ sync
 sleep 3
 
 fdisk -l
-read -p "Your newdisk: " newdisk
+read -p "请输入需要挂载的分区: " newdisk
+read -p "请输入挂载路径: " dirmount
 
 mkfs -t ext4 $newdisk &>/dev/null
 mkdir /$dirmount &>/dev/null
 mount $newdisk /$dirmount
-echo "Init finish"  
+echo "已成功完成"  
